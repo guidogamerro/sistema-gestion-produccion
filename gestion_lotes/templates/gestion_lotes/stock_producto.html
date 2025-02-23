@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}Stock de lotes{% endblock %}
+
+{% block header %}
+    <h1>Stock de productos</h1>
+{% endblock %}
+
+{% block content %}
+<div class="conteiner-opc">
+    <a href="{% url 'gestion_lotes:lista_lotes' %}" class="button-link-h">Listado de lotes</a>
+    <a href="{% url 'gestion_lotes:stock_producto' %}" class="button-link-h">Stock de productos</a>
+    <a href="{% url 'gestion_lotes:lista_despachos' %}" class="button-link-h">Lista despachos</a>
+</div>
+
+<form method="GET" action="{% url 'gestion_lotes:stock_producto' %}" class="filter-form">
+    <div class="form-group">
+        <label for="nombre_lote">Lote: <input type="text" name="nombre_lote" id="nombre_lote" class="form-control"></label>
+    </div>
+
+    <div class="form-group">
+        <label for="producto">Producto: 
+            <select name="producto" id="producto" class="form-control">
+                <option value="">--Seleccionar Producto--</option>
+                <option value="prod A">Prod A</option>
+                <option value="prod B">Prod B</option>
+                <option value="prod C">Prod C</option>
+            </select>
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label for="tipo_modelo">Modelo: 
+            <select name="tipo_modelo" id="tipo_modelo" class="form-control">
+                <option value="">--Seleccionar Modelo--</option>
+                <option value="todos">Todos</option>
+                <option value="lote">Lotes</option>
+                <option value="mezcla">Mezclas</option>
+            </select>
+        </label>
+    </div>
+
+    <button type="submit" class="filter-button">Buscar</button>
+    <a href="{% url 'gestion_lotes:crear_mezcla' %}" class="button-link-h">Crear una mezcla</a>
+    <a href="{% url 'gestion_lotes:nuevo_despacho' %}" class="button-link-h">Nuevo despacho</a>
+</form>
+
+<table class="lotes-table">
+    <tr>
+        <th>Nombre</th>
+        <th>Producto</th>
+        <th>Stock</th>
+        <th>Acciones</th>
+    </tr>
+    {% for item in stock_total %}
+    <tr>
+        {% if item.nombre_lote %}
+            <td><a href="{% url 'gestion_lotes:detalle_lote' pk=item.pk %}">{{ item.nombre_lote }}</a></td>
+        {% else %}
+            <td><a href="{% url 'gestion_lotes:registrar_despacho' pk=item.pk %}">{{ item.nombre_mezcla }}</a></td>
+        {% endif %}
+
+        <td>{{ item.producto }}</td>
+
+        {% if item.stock %}
+            <td>{{ item.stock}}</td>
+        {% else %}
+            <td>{{ item.stock_restante }}</td>
+        {% endif %}
+        
+        {% if item.nombre_lote %}
+            <td>
+                <div>
+                    <a href="{% url 'gestion_lotes:detalle_lote' pk=item.pk %}" style="padding-right: 15px;" class="detalle-icono" title="Ver detalle del lote">
+                        <i class="fas fa-info-circle"></i>
+                    </a>
+                </div>
+            </td>
+        {% else %}
+            <td>
+                <div>
+                    <a href="{% url 'gestion_lotes:detalle_mezcla' pk=item.pk %}" class="detalle-icono" title="Ver detalle del lote">
+                        <i class="fas fa-info-circle"></i>
+                    </a>
+                </div>
+            </td>
+        {% endif %}
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="3">No hay stock</td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+<!--
+    <table class="lotes-table">
+        <tr>
+            <th>Nombre</th>
+            <th>Producto</th>
+            <th>Stock</th>
+            <th>Acciones</th>
+        </tr>
+        {% for lote in lotes_stock %}
+        <tr>
+            <td><a href="{% url 'gestion_lotes:detalle_lote' pk=lote.pk %}">{{ lote.nombre_lote }}</a></td>
+            <td>{{ lote.producto }}</td>
+            <td>{{ lote.stock }}</td>
+            <td>
+                <div>
+                    <a href="{% url 'gestion_lotes:detalle_lote' pk=lote.pk %}">Ver Detalle</a>
+                </div>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">No hay lotes en stock</td>
+        </tr>
+        {% endfor %}
+    </tr>
+    {% for lote in mezclas_stock %}
+    <tr>
+        <td><a href="{% url 'gestion_lotes:detalle_mezcla' pk=lote.pk %}">{{ lote.nombre_mezcla }}</a></td>
+        <td>{{ lote.cantidad_total }}</td>
+        <td>{{ lote.stock_restante }}</td>
+        <td>
+            <a href="{% url 'gestion_lotes:registrar_despacho' pk=lote.pk %}">Despacho</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="3">No hay mezclas en stock</td>
+    </tr>
+    {% endfor %}
+    </table>
+    -->
+
+<!--<script>
+    const checkboxes = document.querySelectorAll('input[name="lotes_seleccionados"]');
+    const crearLoteComercialBtn = document.getElementById('crearLoteComercialBtn');
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            crearLoteComercialBtn.disabled = !isChecked
+        })
+    })
+</script>-->
+
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Lotes{% endblock %}
+
+{% block header %}
+<h1>Listado de lotes</h1>
+{% endblock %}
+
+{% block content %}
+<div class="conteiner-opc">
+    <a href="{% url 'gestion_lotes:lista_lotes' %}" class="button-link-h">Listado de lotes</a>
+    <a href="{% url 'gestion_lotes:stock_producto' %}" class="button-link-h">Stock de productos</a>
+    <a href="{% url 'gestion_lotes:lista_despachos' %}" class="button-link-h">Lista despachos</a>
+</div>
+
+<div class="filters-next">
+    <form method="GET" action="{% url 'gestion_lotes:lista_lotes' %}" class="filter-form">
+        <div class="form-group">
+            <label for="nombre_lote">Lote: <input type="text" name="nombre_lote" id="nombre_lote" class="form-control"></label>
+        </div>
+
+        <div class="form-group">
+            <label for="producto">Producto: 
+                <select name="producto" id="producto" class="form-control">
+                    <option value="">--Seleccionar Producto--</option>
+                    <option value="prod A">Prod A</option>
+                    <option value="prod B">Prod B</option>
+                    <option value="prod C">Prod C</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="fecha_inicio_desde">Fecha Inicio desde: {{ form.fecha_inicio_desde }} hasta: {{ form.fecha_inicio_hasta }}</label>
+        </div>
+
+        <div class="form-group">
+            <label for="estado">Estado:
+                <select name="estado" id="estado" class="form-control">
+                    <option value="">--Seleccionar un estado--</option>
+                    <option value="iniciado">Iniciado</option>
+                    <option value="finalizado">Finalizado</option>
+                </select>
+            </label>       
+        </div>
+
+        <button type="submit" class="filter-button">Buscar</button>
+        <a href="{% url 'gestion_lotes:crear_lote' %}" class="button-link-h">Nuevo lote</a>
+        
+    </form>
+
+    <form method="get" action="{% url 'gestion_lotes:exportar_excel' %}" class="filter-form">
+        <input type="hidden" name="nombre_lote" value="{{ request.GET.nombre_lote }}">
+        <input type="hidden" name="producto" value="{{ request.GET.producto }}">
+        <input type="hidden" name="fecha_inicio" value="{{ request.GET.fecha_inicio }}">
+        <input type="hidden" name="fecha_fin" value="{{ request.GET.fecha_fin }}">
+        <button type="submit" class="button-link-h">Excel</button>
+    </form>
+</div>
+
+<table class="lotes-table">
+    <tr>
+        <th>Fecha inicio</th>
+        <th>Fecha fin</th>
+        <th>Nombre</th>
+        <th>Producto</th>
+        <th>Estado</th>
+        <th style="text-align: center;">Acciones</th>
+    </tr>
+    {% for item in lista_total %}
+    <tr>
+        {% if item.fecha_inicio %}
+            <td>{{ item.fecha_inicio }}</td>
+        {% else %}
+            <td>-</td>
+        {% endif %}
+
+        {% if item.fecha_fin %}
+            <td>{{ item.fecha_fin}}</td>
+        {% else %}
+            <td>-</td>
+        {% endif %}
+        
+        {% if item.nombre_lote %}
+            <td><a href="{% url 'gestion_lotes:detalle_lote' pk=item.pk %}">{{ item.nombre_lote }}</a></td>
+        {% else %}
+            <td><a href="{% url 'gestion_lotes:detalle_mezcla' pk=item.pk %}">{{ item.nombre_mezcla }}</a></td>
+        {% endif %}
+
+        <td>{{ item.producto }}</td>
+
+        {% if item.estado %}
+            <td>{{ item.estado }}</td>
+        {% else %}
+            <td>-</td>
+        {% endif %}
+        
+        <td>
+            <div class="actions">
+
+                {% if item.nombre_lote %}
+                    <a href="{% url 'gestion_lotes:detalle_lote' pk=item.pk %}" style="padding-right: 15px;" class="detalle-icono" title="Ver detalle del lote">
+                        <i class="fas fa-info-circle"></i>
+                    </a>
+                    <a href="{% url 'gestion_lotes:editar_lote' item.pk %}" style="padding-right: 15px;" class="detalle-icono" title="Editar lote">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                {% else %}
+                    <a href="{% url 'gestion_lotes:detalle_mezcla' pk=item.pk %}" style="padding-right: 15px;">Ver detalle</a>
+                {% endif %}
+                
+                <form method="post" action="{% url 'gestion_lotes:eliminar_lote' item.id %}" onsubmit="return confirmDelete()">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-delete">Eliminar</button>
+                </form>
+            </div>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="3">No se encontraron lotes que coincidan con los filtros.</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}
+
+<!--
+<table class="lotes-table">
+    <tr>
+        <th>Fecha inicio</th>
+        <th>Fecha fin</th>
+        <th>Nombre</th>
+        <th>Producto</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+    </tr>
+    {% for lote in lotes %}
+    <tr>
+        <td>{{ lote.fecha_inicio }}</td>
+        <td>{{ lote.fecha_fin}}</td>
+        <td><a href="{% url 'gestion_lotes:detalle_lote' pk=lote.pk %}">{{ lote.nombre_lote }}</a></td>
+        <td>{{ lote.producto }}</td>
+        <td>{{ lote.estado }}</td>
+        <td>
+            <div class="actions">
+                <a href="{% url 'gestion_lotes:detalle_lote' pk=lote.pk %}" style="padding-right: 15px;">Ver Detalle</a>
+                <a href="{% url 'gestion_lotes:editar_lote' lote.pk %}" style="padding-right: 15px;">Editar</a>
+                <form method="post" action="{% url 'gestion_lotes:eliminar_lote' lote.id %}" onsubmit="return confirmDelete()">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-delete">Eliminar</button>
+                </form>
+            </div>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="3">No se encontraron lotes que coincidan con los filtros.</td>
+    </tr>
+    {% endfor %}
+
+    {% for mezcla in mezclas %}
+    <tr>
+        <td>{{ mezcla.fecha_inicio }}</td>
+        <td>{{ mezcla.fecha_fin}}</td>
+        <td><a href="{% url 'gestion_lotes:detalle_mezcla' pk=mezcla.pk %}">{{ mezcla.nombre_mezcla }}</a></td>
+        <td>{{ mezcla.producto }}</td>
+        <td>{{ mezcla.estado }}</td>
+        <td>
+            <div class="actions">
+                <a href="{% url 'gestion_lotes:detalle_mezcla' pk=mezcla.pk %}" style="padding-right: 15px;">Ver Detalle</a>
+            </div>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="3">No se encontraron mezclas que coincidan con los filtros.</td>
+    </tr>
+    {% endfor %}
+
+</table>
+-->

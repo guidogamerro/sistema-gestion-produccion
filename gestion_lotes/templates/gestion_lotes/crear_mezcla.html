@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Crear mezcla{% endblock %}
+
+{% block header %}
+    <h1>Crear mezcla</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="conteiner-opc">
+    <a href="{% url 'gestion_lotes:lista_lotes' %}" class="button-link-h">Listado de lotes</a>
+    <a href="{% url 'gestion_lotes:stock_producto' %}" class="button-link-h">Stock de productos</a>
+    <a href="{% url 'gestion_lotes:lista_despachos' %}" class="button-link-h">Lista despachos</a>
+</div>
+
+<h1>Crear Mezcla</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <h3>Selecciona lotes y cantidad:</h3>
+    <div class="lote-detalle-container">
+    <div>
+        <p>Producto A</p>
+        <table>
+            {% for lote in lotes %}
+                {% if lote.producto == 'prod A' %}
+                    <div>
+                    <tr>
+                        <td><label>{{ lote.nombre_lote }}</label></td>
+                        <td><label>{{ lote.stock }}</label></td>
+                        <td><input type="checkbox" name="lmez" id="lmez" class="lmez" value="{{ lote.id }}"></td>
+                        <td><input type="number" name="cant" id="cant" class="cant" disabled></td>
+                    </tr>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            </table>
+    </div>
+    <div>
+        <p>Producto B</p>
+        <table>
+            {% for lote in lotes %}
+                {% if lote.producto == 'prod B' %}
+                    <div>
+                    <tr>
+                        <td><label>{{ lote.nombre_lote }}</label></td>
+                        <td><label>{{ lote.stock }}</label></td>
+                        <td><input type="checkbox" name="lmez" id="lmez" class="lmez" value="{{ lote.id }}"></td>
+                        <td><input type="number" name="cant" id="cant" class="cant" disabled></td>
+                    </tr>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            </table>
+    </div>
+    <div>
+        <p>Producto C</p>
+        <table>
+        {% for lote in lotes %}
+            {% if lote.producto == 'prod C' %}
+                <div>
+                <tr>
+                    <td><label>{{ lote.nombre_lote }}</label></td>
+                    <td><label>{{ lote.stock }}</label></td>
+                    <td><input type="checkbox" name="lmez" id="lmez" class="lmez" value="{{ lote.id }}"></td>
+                    <td><input type="number" name="cant" id="cant" class="cant" disabled></td>
+                </tr>
+                </div>
+            {% endif %}
+        {% endfor %}
+        </table>
+    </div>
+    </div>
+<!--
+    <table>
+    {% for lote in lotes %}
+        <tr>
+            <td><label>{{ lote.nombre_lote }}</label></td>
+            <td><label>{{ lote.stock }}</label></td>
+            <td><input type="checkbox" name="lmez" id="lmez" class="lmez" value="{{ lote.id }}"></td>
+            <td><input type="number" name="cant" id="cant" class="cant" disabled></td>
+        </tr>
+    {% endfor %}
+    </table>
+-->
+    <button type="submit" class="submit-button">Crear Mezcla</button>
+</form>
+<a href="{% url 'gestion_lotes:stock_producto' %}" class="button-link" style="width: 98.5%; padding: 10px; margin-top: 5px;">Cancelar</a>
+
+<!--
+<script>
+    const checkboxess = document.querySelectorAll('.lmez');
+
+    checkboxess.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const filaa = checkbox.closest('td');
+            const inputNumeroo = fila.querySelector('.cant');
+            inputNumeroo.disabled = !checkbox.checked;
+        });
+    });
+</script>
+-->
+
+    <script>
+        const checkboxes = document.querySelectorAll('.lmez');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const fila = checkbox.closest('tr');
+                const inputNumero = fila.querySelector('.cant');
+                inputNumero.disabled = !checkbox.checked;
+            });
+        });
+    </script>
+
+{% endblock %}
+

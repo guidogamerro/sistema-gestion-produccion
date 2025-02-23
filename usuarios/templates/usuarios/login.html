@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Login{% endblock %}
+
+{% block header %}
+    <h1>Ingreso al sistema</h1>
+{% endblock %}
+
+{% block content %}
+<div class="form-container" style="background-color: rgb(255, 255, 255);">
+    <h2>Iniciar Sesión</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+                <div class="form-field">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="error">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        <button type="submit">Ingresar</button>
+    </form>
+    <p>¿No tienes una cuenta? <a href="{% url 'usuarios:registrar_usuario' %}">Regístrate aquí</a></p>
+</div>
+{% endblock %}

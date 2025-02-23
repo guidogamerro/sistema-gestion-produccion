@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Lote{% endblock %}
+
+{% block header %}
+    <h1>Eliminar Lote: {{ lote.nombre_lote }}</h1>
+{% endblock %}
+
+{% block content %}
+    <h1>Eliminar Lote: {{ lote.nombre_lote }}</h1>
+    <p>¿Estás seguro de que quieres eliminar este lote?</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Sí, eliminar</button>
+    </form>
+
+    <a href="{% url 'gestion_lotes:lista_lotes' %}">Cancelar</a>
+{% endblock %}

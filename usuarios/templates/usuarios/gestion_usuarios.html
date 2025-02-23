@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Gestion de usuarios{% endblock %}
+
+{% block header %}
+    <h1>Gestion de usuarios</h1>
+{% endblock %}
+
+{% block content %}
+<div class="conteiner-opc">
+    <a href="{% url 'usuarios:gestion_usuarios' %}" class="button-link-h">Usuarios</a>
+    <a href="{% url 'usuarios:aprobar_usuarios' %}" class="button-link-h">Para aprobar</a>
+</div>
+
+<h2>Usuarios Registrados</h2>
+<table class="lotes-table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Estado</th>
+            <th>¿Staff?</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for usuario in usuarios2 %}
+        <tr>
+            <td>{{ usuario.username }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>{{ usuario.estado }}</td>
+            <td>{{ usuario.is_staff|yesno:"Sí,No" }}</td>
+        </tr>
+        {% endfor %}
+        {% for usuario in usuarios %}
+        <tr>
+            <td>{{ usuario.user.username }}</td>
+            <td>{{ usuario.user.email }}</td>
+            <td>{{ usuario.estado }}</td>
+            <td>{{ usuario.is_staff|yesno:"Sí,No" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Nuevo despacho{% endblock %}
+
+{% block header %}
+<h1>Nuevo despacho</h1>
+{% endblock %}
+
+{% block content %}
+<div class="conteiner-opc">
+    <a href="{% url 'gestion_lotes:lista_lotes' %}" class="button-link-h">Listado de lotes</a>
+    <a href="{% url 'gestion_lotes:stock_producto' %}" class="button-link-h">Stock de productos</a>
+    <a href="{% url 'gestion_lotes:lista_despachos' %}" class="button-link-h">Lista despachos</a>
+</div>
+<div class="form-container" style="background-color: rgb(255, 255, 255);">
+    <h1>Mezcla: {{ mezcla.nombre_mezcla }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Registrar Despacho</button>
+    </form>
+</div>
+{% endblock %}

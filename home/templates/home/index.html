@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Pagina inicial{% endblock %}
+
+{% block header %}
+    <h1>SISTEMA INTERNO DE GESTION</h1>
+{% endblock %}
+
+{% block content %}
+    <h1>Bienvenido {{ user.username }}</h1>
+    <p>Selecciona la sección a la que deseas acceder:</p>
+    <ul>
+        <li><a href="{% url 'gestion_lotes:lista_lotes' %}" class="button-link-h">Gestión de lotes</a></li><br>
+        <!-- Agregar aqui nuevos enlaces a futuras apps -->
+        <li><a href="#" class="button-link-h">Control de Procesos / PARA DESARROLLAR</a></li><br>
+        <li><a href="#" class="button-link-h">Insumos / PARA DESARROLLAR</a></li><br>
+        <li><a href="{% url 'usuarios:gestion_usuarios' %}" class="button-link-h">Usuarios</a></li><br>
+        <li><a href="{% url 'home:dashboard' %}" class="button-link-h">Dashboard</a></li>
+    </ul>
+{% endblock %}

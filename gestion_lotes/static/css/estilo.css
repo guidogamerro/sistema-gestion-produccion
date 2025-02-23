@@ -1,0 +1,513 @@
+body {
+    background-color: #f4f4f4;
+    color: #2c2c2c;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+header {
+    background-color: #333333;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+header a:hover {
+    text-decoration: underline;
+}
+
+button {
+    font-size: 14px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button.primary {
+    background-color: #0056b3;
+    color: white;
+}
+
+button.danger {
+    background-color: #d9534f;
+    color: white;
+}
+
+button.secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+a {
+    text-decoration: underline;
+  }
+
+
+/* Estilos del header */
+.main-header {
+    background-color: #5b5e5f;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .btn {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #333;
+}
+
+.navbar .btn-danger {
+    color: red;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.navbar .btn-danger:hover {
+    text-decoration: underline;
+}
+
+nav a {
+    text-decoration: underline;
+  }
+
+nav a:hover {
+    color: rgb(91, 221, 91);
+  }
+
+
+.header-title {
+    background-color: #f1f1f1;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #555;
+}
+
+
+
+
+.filtro-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    background-color: #007bff;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+    font-family: Arial;
+}
+
+.filters-next {
+    display: flex;
+}
+
+.filter-button {
+    padding: 4px 8px;
+    background-color: #5b605b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.filter-button:hover {
+    background-color: #1e6a0c;
+}
+
+.lotes-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-family: Arial, sans-serif;
+}
+
+.lotes-table thead {
+    background-color: #484648;
+    color: white;
+}
+
+.lotes-table th, .lotes-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.lotes-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.lotes-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.delete-link {
+    color: #ff4d4d;
+    text-decoration: none;
+}
+
+.delete-link:hover {
+    color: #ff1a1a;
+    text-decoration: underline;
+}
+
+.button-link {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #c1470a;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.button-link:hover {
+    background-color: #7e2f07;
+}
+
+.button-link-h {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #5b605b;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.button-link-h:hover {
+    background-color: #8ba792;
+}
+
+.conteiner-opc{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.conteiner-opc a{
+    margin: 10px;
+}
+
+
+
+
+
+.main-heading {
+    font-size: 2.5em;
+    color: #333;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border-bottom: 2px solid #4CAF50; /* Línea decorativa */
+    padding-bottom: 10px;
+}
+
+
+
+.lote-detalle-container{
+    display: flex;
+    justify-content: space-between; /* Distribuye el espacio entre los elementos */
+    gap: 20px; /* Espacio entre cada sección */
+    margin-top: 20px; /* Separación superior para la disposición general */
+}
+
+.lote-detalle-container > div {
+    flex: 1; /* Asegura que cada sección ocupe el mismo ancho */
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Suaviza el contorno */
+}
+
+.lote-detalle h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form-field {
+    margin-bottom: 6px;
+}
+
+.form-field label {
+    display: flex;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    width: 95%;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #45a049;
+}
+
+.form-container .cancel-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ba400c;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+
+.form-container .cancel-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ba400c;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+
+
+
+.filter-form {
+    background-color: #f2f2f2;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos se ajusten si es necesario */
+    gap: 20px; /* Espacio entre los campos */
+}
+
+.filter-form .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0; /* Elimina margen inferior extra */
+}
+
+/* Etiquetas y campos en disposición horizontal */
+.filter-form label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 3px;
+    font-size: 18px;
+}
+
+.filter-form .form-control {
+    width: 100px; /* Tamaño estándar para cada campo */
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.filter-form .btn-submit {
+    background-color: #4CAF50;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    align-self: center; /* Centra el botón en el formulario */
+}
+
+.filter-form .btn-submit:hover {
+    background-color: #45a049;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+}
+
+.actions .btn-delete {
+    background-color: #e34622;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 11px;
+    align-self: center; 
+}
+
+.actions .btn-delete:hover {
+    background-color: #663118;
+}
+
+.btn-volver {
+    background-color: #e34622;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 11px;
+    align-self: center; 
+}
+
+.btn-volver:hover {
+    background-color: #663118;
+}
+
+.row-but {
+    font-size: 2.5em;
+    color: #333;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding-bottom: 10px;
+}
+
+
+
+table.lotes-table td a {
+    color: black;
+}
+
+table.lotes-table td a:visited,
+table.lotes-table td a:hover,
+table.lotes-table td a:active {
+    color: black;
+}
+
+.detalle-icono i {
+    font-size: 1.1rem; /* Ajusta el tamaño */
+    transition: color 0.3s; /* Efecto suave al pasar el mouse */
+}
+
+.detalle-icono i:hover {
+    color: #0056b3; /* Cambia el color cuando pases el mouse */
+}
+
+
+
+.tab {
+    text-align: center;
+}
+
+.tab button{
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #5b605b;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.tabcontent .row {
+    display: flex;
+    justify-content: space-around;
+}
+
+.tabcontent .row .card-body{
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 200px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    background-color: #d5d8db;
+}
+
+.tabcontent .row .card-title{
+    color: black
+}
+
+.tabcontent .row .card-text{
+    
+    color: black
+}

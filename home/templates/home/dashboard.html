@@ -1,0 +1,320 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Dashboard{% endblock %}
+
+{% block header %}
+    <h1>Dashboard</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'Produccion')">Producción</button>
+        <button class="tablinks" onclick="openTab(event, 'Mezclas')">Mezclas</button>
+        <button class="tablinks" onclick="openTab(event, 'Despachos')">Despachos</button>
+    </div>
+    
+    <!-- Contenido de cada pestaña -->
+    <div id="Produccion" class="tabcontent" style="margin-top: 20px;">
+        <form method="get" style="justify-content: space-around; text-align: center;">
+            <label for="start_date">Fecha Inicio:</label>
+            <input type="date" id="start_date" name="start_date">
+            <label for="end_date">Fecha Fin:</label>
+            <input type="date" id="end_date" name="end_date">
+            <button type="submit" class="button-link-h">Filtrar</button>
+        </form>
+        {% if not ppp_serie %}
+            <p>No se encontraron datos para el rango de fechas seleccionado.</p>
+        {% endif %}
+        <div id="produccion-chart-container" style="margin-top: 30px;">
+            <!-- Tarjetas informativas -->
+                <div class="row">
+                    <div class="card-body">
+                        <h5 class="card-title">Total de Lotes</h5>
+                        <p class="card-text">{{ total_lotes }}</p>     
+                   </div>        
+                    <div class="card-body">
+                        <h5 class="card-title">Cantidad producida</h5>
+                        <p class="card-text">{{ cantidad_producida }}</p>
+                    </div>
+                    <!--<div class="col-md-4">
+                    <div class="card text-white bg-warning mb-3">-->
+                    <div class="card-body">
+                        <h5 class="card-title">Stock Total</h5>
+                        <p class="card-text">{{ stock_total }} kg</p>
+                    </div>
+                </div>
+                <!-- Gráfico de Producción por Producto -->
+            <div class="mt-4" style="width: 90%; height: 450px; margin: auto; margin-top: 20px;">
+                <canvas id="produccionProductoChart"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <div id="Mezclas" class="tabcontent" style="display:none;">
+        <h3>Mezclas</h3>
+        <form method="get">
+            <label for="start_date">Fecha Inicio:</label>
+            <input type="date" id="start_date" name="start_date">
+            <label for="end_date">Fecha Fin:</label>
+            <input type="date" id="end_date" name="end_date">
+            <button type="submit">Filtrar</button>
+        </form>
+        <div id="mezclas-chart-container" style="width: 90%; height: 500px; margin: auto;">
+            <canvas id="mezclasChart"></canvas>
+        </div>
+    </div>
+    
+    <div id="Despachos" class="tabcontent" style="display:none; margin-top: 20px;">
+        <form method="get" style="justify-content: space-around; text-align: center;">
+            <label for="start_date">Fecha Inicio:</label>
+            <input type="date" id="start_date" name="start_date">
+            <label for="end_date">Fecha Fin:</label>
+            <input type="date" id="end_date" name="end_date">
+            <button type="submit">Filtrar</button>
+        </form>
+        <div id="despachos-info-container" style="margin-top: 20px;">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card text-white bg-primary mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Total de despachos</h5>
+                            <p class="card-text">{{ total_despachos }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-white bg-success mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Cantidad despachada</h5>
+                            <p class="card-text">{{ cantidad_despachada }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="despachos-chart-container" style="display: flex; justify-content: center; gap: 20px; align-items: center; margin-top: 20px;">
+                <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                    <h3 style="text-align: center; margin-bottom: 2px;">Cantidad de kg por cliente</h3>
+                    <canvas id="despachosChart" style="max-width: 400px; max-height: 400; margin-top: 0px; margin-bottom: 0px;"></canvas>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                    <h3 style="text-align: center; margin-bottom: 2px;">Lotes por cliente</h3>
+                    <canvas id="despachosChart2" style="max-width: 400px; max-height: 400; margin-top: 10px; margin-bottom: 10px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datos del servidor
+        const produccionData = JSON.parse('{{ ppp_serie|safe }}');
+    
+        // Extraer datos para el gráfico
+        const labels = produccionData.map(item => item.producto);
+        const cantidadTotal = produccionData.map(item => item.cantidad_total);
+        const totalLotes = produccionData.map(item => item.lotes_totales);
+    
+        // Configurar el gráfico
+        const ctx = document.getElementById('produccionProductoChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Cantidad Total (kg)',
+                        data: cantidadTotal,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+
+            // Ocultar todas las pestañas
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Eliminar la clase activa de todos los botones
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Mostrar la pestaña actual y marcarla como activa
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+
+    <script>
+        const mezclasData = JSON.parse('{{ mezclas_por_producto|safe }}');
+        // Convertir los datos en formato adecuado
+        const mezclasLabels = mezclasData.map(item => item.producto);
+        const mezclasValues = mezclasData.map(item => item.total_mezclas);
+        // Crear el gráfico
+        const ctxMezclas = document.getElementById("mezclasChart").getContext("2d");
+        new Chart(ctxMezclas, {
+            type: "bar",
+            data: {
+                labels: mezclasLabels,
+                datasets: [{
+                    label: 'Mezclas por Producto (kg)',
+                    data: mezclasValues,
+                    backgroundColor: 'rgba(153, 102, 255, 0.5)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+    </script>
+
+    <script>
+        // Datos del servidor
+        const despachosData = JSON.parse('{{ despacho_por_cliente|safe }}');
+
+        // Extraer datos para el gráfico
+        const despachoLabels = despachosData.map(item => item.cliente);
+        const despachoTotal = despachosData.map(item => item.cantidad_total);
+        const lotesTotal = despachosData.map(item => item.lotes_totales);
+
+        // Configurar el gráfico
+        const ctxDespacho = document.getElementById('despachosChart').getContext('2d');
+        new Chart(ctxDespacho, {
+            type: 'pie',
+            data: {
+                labels: despachoLabels,
+                datasets: [
+                    {
+                        label: 'Cantidad Total (kg)',
+                        data: despachoTotal,
+                        backgroundColor: [
+                            "rgba(255, 99, 132, 0.2)",
+                            "rgba(54, 162, 235, 0.2)",
+                            "rgba(255, 206, 86, 0.2)",
+                            "rgba(75, 192, 192, 0.2)",
+                            "rgba(153, 102, 255, 0.2)"
+                        ],
+                        borderColor: [
+                            "rgba(255, 99, 132, 1)",
+                            "rgba(54, 162, 235, 1)",
+                            "rgba(255, 206, 86, 1)",
+                            "rgba(75, 192, 192, 1)",
+                            "rgba(153, 102, 255, 1)"
+                        ],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: false,
+                maintainAspectRatio: true,
+                plugins: {
+                        legend: {
+                            position: "top",
+                            labels: {
+                                padding: 10, // Reduce el espaciado interno entre la leyenda y el gráfico
+                                font: {
+                                    size: 12 // Ajusta el tamaño de la fuente de la leyenda si es necesario
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    return `${tooltipItem.label}: ${tooltipItem.raw} kg`;
+                                }
+                            }
+                        }
+                    },
+                layout: {
+                    padding: {
+                        top: 0, // Elimina cualquier espacio superior
+                        bottom: 0, // Reduce espacio debajo del gráfico
+                    }
+                }
+            }
+        });
+
+        const ctxDespacho2 = document.getElementById('despachosChart2').getContext('2d');
+        new Chart(ctxDespacho2, {
+            type: 'pie',
+            data: {
+                labels: despachoLabels,
+                datasets: [
+                    {
+                        label: 'Lotes totales',
+                        data: lotesTotal,
+                        backgroundColor: [
+                            "rgba(255, 99, 132, 0.2)",
+                            "rgba(54, 162, 235, 0.2)",
+                            "rgba(255, 206, 86, 0.2)",
+                            "rgba(75, 192, 192, 0.2)",
+                            "rgba(153, 102, 255, 0.2)"
+                        ],
+                        borderColor: [
+                            "rgba(255, 99, 132, 1)",
+                            "rgba(54, 162, 235, 1)",
+                            "rgba(255, 206, 86, 1)",
+                            "rgba(75, 192, 192, 1)",
+                            "rgba(153, 102, 255, 1)"
+                        ],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: false,
+                plugins: {
+                        legend: {
+                            position: "top",
+                            labels: {
+                                padding: 10, // Reduce el espaciado interno entre la leyenda y el gráfico
+                                font: {
+                                    size: 12 // Ajusta el tamaño de la fuente de la leyenda si es necesario
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    return `${tooltipItem.label}: ${tooltipItem.raw} lotes`;
+                                }
+                            }
+                        }
+                    },
+                layout: {
+                    padding: {
+                        top: 5, // Elimina cualquier espacio superior
+                        bottom: 5, // Reduce espacio debajo del gráfico
+                    }
+                }
+            }
+        });
+
+    </script>
+{% endblock %}

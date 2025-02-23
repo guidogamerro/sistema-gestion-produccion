@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista despachos{% endblock %}
+
+{% block header %}
+<h1>Lista despachos</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="conteiner-opc">
+    <a href="{% url 'gestion_lotes:lista_lotes' %}" class="button-link-h">Listado de lotes</a>
+    <a href="{% url 'gestion_lotes:stock_producto' %}" class="button-link-h">Stock de productos</a>
+    <a href="{% url 'gestion_lotes:lista_despachos' %}" class="button-link-h">Lista despachos</a>
+</div>
+
+<form method="GET" class="filter-form">
+
+    <div>
+        <label for="nombre_lote">Lote: <input type="text" name="nombre_lote" id="nombre_lote" class="form-control"></label>
+    </div>
+
+    <div class="form-group">
+        <label for="producto">Producto: 
+            <select name="producto" id="producto" class="form-control">
+                <option value="">--Seleccionar Producto--</option>
+                <option value="prod A">Prod A</option>
+                <option value="prod B">Prod B</option>
+                <option value="prod C">Prod C</option>
+            </select>
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label for="fecha_inicio_desde">Fecha Inicio desde: {{ form.fecha_inicio_desde }} hasta: {{ form.fecha_inicio_hasta }}</label>
+    </div>
+
+    <div>
+        <label for="cliente">Cliente: <input type="text" name="cliente" id="cliente" class="form-control"></label> 
+    </div>
+
+    <button type="submit" class="filter-button">Buscar</button>
+    <a href="{% url 'gestion_lotes:nuevo_despacho' %}" class="button-link-h">Nuevo despacho</a>
+
+</form>
+
+<table class="lotes-table">
+    <tr>
+        <th>Fecha</th>
+        <th>Nombre</th>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Cliente</th>
+    </tr>
+
+    {% for lote in despachos %}
+    
+    <tr>
+        <td>{{ lote.fecha_despacho }}</td>
+        <td><a href="{% url 'gestion_lotes:detalle_mezcla' pk=lote.mezcla.pk %}">{{ lote.mezcla.nombre_mezcla }}</a></td>
+        <td>{{ lote.mezcla.producto }}</td>
+        <td>{{ lote.cantidad }}</td>
+        <td>{{ lote.cliente }}</td>
+    </tr>
+
+    {% empty %}
+
+    <tr>
+        <td colspan="3">No se realizaron despachos hasta el moemento</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+{% endblock %}

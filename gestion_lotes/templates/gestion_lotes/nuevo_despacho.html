@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Nuevo despacho{% endblock %}
+
+{% block header %}
+    <h1>Crear nuevo despacho</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="conteiner-opc">
+    <a href="{% url 'gestion_lotes:lista_lotes' %}" class="button-link-h">Listado de lotes</a>
+    <a href="{% url 'gestion_lotes:stock_producto' %}" class="button-link-h">Stock de productos</a>
+    <a href="{% url 'gestion_lotes:lista_despachos' %}" class="button-link-h">Lista despachos</a>
+</div>
+
+
+
+<div class="form-container" style="background-color: rgb(255, 255, 255);">
+    <h2>Nuevo despacho</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+                <div class="form-field">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="error">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        <button type="submit" class="submit-button">Crear despacho</button>
+    </form>
+    <a href="{% url 'gestion_lotes:lista_lotes' %}" class="button-link" style="width: 96%; padding: 10px; margin-top: 5px;">Cancelar</a>
+</div>
+
+    <script>
+        const checkboxes = document.querySelectorAll('.lmez');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const fila = checkbox.closest('tr');
+                const inputNumero = fila.querySelector('.cant');
+                inputNumero.disabled = !checkbox.checked;
+            });
+        });
+    </script>
+
+{% endblock %}
+

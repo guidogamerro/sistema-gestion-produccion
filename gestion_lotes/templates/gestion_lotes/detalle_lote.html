@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+<title>{% block title %}Detalle del Lote{% endblock %}</title>
+
+{% block header %}
+<h1>Detalle del Lote: {{ lote.nombre_lote }}</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="conteiner-opc">
+    <a href="{% url 'gestion_lotes:lista_lotes' %}" class="button-link-h">Listado de lotes</a>
+    <a href="{% url 'gestion_lotes:stock_producto' %}" class="button-link-h">Stock de productos</a>
+    <a href="{% url 'gestion_lotes:lista_despachos' %}" class="button-link-h">Lista despachos</a>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="lote-detalle-container">
+        <div class="form-field">
+            <h2>Datos Generales</h2>
+                {{ form.nombre_lote.label }} {{ form.nombre_lote }}<br>
+                {{ form.tipo.label }} {{ form.tipo }}<br>
+                {{ form.producto.label }} {{ form.producto }}<br>
+                {{ form.estado.label }} {{ form.estado }}<br>
+                {{ form.fecha_inicio.label }} {{ form.fecha_inicio }}<br>
+                {{ form.fecha_fin.label }} {{ form.fecha_fin }}<br>
+        </div>
+
+        <div class="form-field">
+            <h2>Cantidad y Calidad</h2>
+                {{ form.cantidad.label }} (kg) {{ form.cantidad }}<br>
+                {{ form.calidad1.label }} {{ form.calidad1 }}<br>
+                {{ form.calidad2.label }} {{ form.calidad2 }}<br>
+        </div>
+
+        <div class="form-field">
+            <h2>Destino y stock</h2>
+            {% for lote_en_mezcla in mezclas_usadas %}
+                <li>Utilizado en mezcla: {{ lote_en_mezcla.mezcla.nombre_mezcla }} (Cantidad: {{ lote_en_mezcla.cantidad }} kg)</li>
+            {% empty %}
+                <li>Este lote no ha sido utilizado en ninguna mezcla.</li>
+            {% endfor %}
+            <p>Cantidad en inventario: {{ lote.stock }} kg</p>
+        </div>
+    </div>
+    <button type="submit" class="submit-button">Guardar cambios</button>
+</form>
+<a href="{% url 'gestion_lotes:lista_lotes' %}" class="button-link" style="width: 98.5%; padding: 10px; margin-top: 5px;">Cancelar</a>
+{% endblock %}
+
+<!-- POR si sale mal dejo aca la plantilla anterior
+<div class="form-container">
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-field">
+            <h2>Datos Generales</h2>
+            {{ form.nombre_lote.label }} {{ form.nombre_lote }}<br>
+            {{ form.tipo.label }} {{ form.tipo }}<br>
+            {{ form.producto.label }} {{ form.producto }}<br>
+            {{ form.estado.label }} {{ form.estado }}<br>
+            {{ form.fecha_inicio.label }} {{ form.fecha_inicio }}<br>
+            {{ form.fecha_fin.label }} {{ form.fecha_fin }}
+        </div>
+
+        <div class="form-field">
+            <h2>Cantidad y Calidad</h2>
+            {{ form.cantidad.label }} (kg) {{ form.cantidad }}<br>
+            {{ form.calidad1.label }} {{ form.calidad1 }}<br>
+            {{ form.calidad2.label }} {{ form.calidad2 }}
+        </div>
+
+        <div class="form-field">
+            <h2>Destino y stock</h2>
+            {{ form.destino.label }} {{ form.destino }}
+            {{ form.stock.label }} {{ form.stock }}
+        </div>
+
+        <button type="submit" class="button-link">Guardar cambios</button>
+        <a href="{% url 'gestion_lotes:lista_lotes' %}" class="button-link">Volver</a>
+    </form>
+</div>
+-->
+
+
+<!-- PROBANDO OTRO FORMATO
+{% load static%}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Lote</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+<body>
+    <h1>Detalle del Lote: {{ lote.nombre_lote }}</h1>
+    <p>Estado: {{ lote.estado }}</p>
+    <p>Tipo: {{ lote.tipo }}</p>
+    <p>Fecha Inicio: {{ lote.fecha_inicio }}</p>
+    <p>Fecha Fin: {{ lote.fecha_fin }}</p>
+    <p>Cantidad: {{ lote.cantidad }}</p>
+    <p>Calidad 1: {{ lote.calidad1 }}</p>
+    <p>Calidad 2: {{ lote.calidad2 }}</p>
+-->
+
+<!-- ## ESTO LO TENDRE EN CUENTA EN OTRA OPORTUNIDAD ##
+
+    <h2>Historial de Actualizaciones</h2>
+    <ul>
+        {% for actualizacion in actualizaciones %}
+            <li>{{ actualizacion.fecha_actualizacion }} - {{ actualizacion.etapa }} - {{ actualizacion.comentarios }}</li>
+        {% empty %}
+            <li>No hay actualizaciones registradas para este lote.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Agregar Actualización para Lote: {{ lote.nombre_lote }}</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar Actualización</button>
+    </form>
+-->
+<!--
+    <a href="{% url 'gestion_lotes:lista_lotes' %}">Volver a la Lista de Lotes</a>
+</body>
+</html>
+-->

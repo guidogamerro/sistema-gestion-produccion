@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Usuarios pendientes{% endblock %}
+
+{% block header %}
+    <h1>Usuarios pendientes</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="conteiner-opc">
+  <a href="{% url 'usuarios:gestion_usuarios' %}" class="button-link-h">Usuarios</a>
+  <a href="{% url 'usuarios:aprobar_usuarios' %}" class="button-link-h">Para aprobar</a>
+</div>
+
+<h2>Usuarios pendientes</h2>
+<table class="lotes-table">
+  <thead>
+  <tr>
+    <th>Username</th>
+    <th>Email</th>
+    <th>Acción</th>
+  </tr>
+</thead>
+  {% for perfil in usuarios_pendientes %}
+  <tr>
+    <td>{{ perfil.user.username }}</td>
+    <td>{{ perfil.user.email }}</td>
+    <td>
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="usuario_id" value="{{ perfil.id }}">
+        <button name="accion" value="aprobar" class="button-link-h">Aprobar</button>
+        <button name="accion" value="rechazar" class="button-link-h">Rechazar</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}

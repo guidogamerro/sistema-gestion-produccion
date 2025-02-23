@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+<title>{% block title %}Detalle de la mezcla{% endblock %}</title>
+
+{% block header %}
+<h1>Detalle mezcla: {{ mezcla.nombre_mezcla }}</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="conteiner-opc">
+    <a href="{% url 'gestion_lotes:lista_lotes' %}" class="button-link-h">Listado de lotes</a>
+    <a href="{% url 'gestion_lotes:stock_producto' %}" class="button-link-h">Stock de productos</a>
+    <a href="{% url 'gestion_lotes:lista_despachos' %}" class="button-link-h">Lista despachos</a>
+</div>
+
+<div>
+    <h3>Datos</h3>
+    <p>Mezcla: {{ mezcla.nombre_mezcla}}</p>
+    <p>Cantidad inicial: {{ mezcla.cantidad_total}}</p>
+    <p>Stock: {{ mezcla.stock_restante}} kg</p>
+    <p>Producto: {{ mezcla.producto }}</p>
+    <p style="text-decoration: underline;">Mezcla compuesta por:</p>
+    <ul>
+    {% for lote in lotes %}
+        <li>Lote: {{ lote.lote.nombre_lote }} - Cantidad: {{ lote.cantidad }} kg</li>
+    {% empty %}
+        <li>No se han registrado lotes para esta mezcla</li>
+    {% endfor %}
+    </ul>
+</div>
+<div>
+    <h3>Despachos Registrados</h3>
+    <ul>
+        {% for despacho in despachos %}
+            <li>Cliente: {{ despacho.cliente }} - Cantidad: {{ despacho.cantidad }} - Fecha: {{ despacho.fecha_despacho }}</li>
+        {% empty %}
+            <li>No se han registrado despachos para esta mezcla.</li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+
+{% endblock %}
